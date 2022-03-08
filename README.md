@@ -19,6 +19,7 @@ Swift 자료형 Tuple
 제어문 for while switch
 
 Function vs Method
+Closure (익명함수)
 함수리턴 -> 타입
 파라미터 기본 상수, 변수르 쓰려면 _ value:inout Int 이런식
 전달인자 
