@@ -3,52 +3,85 @@
 ## 1.언어 특징
 
 
-### 1) 정적언어 
-#### => 컴파일 단계에서 변수 및 상수의 형 정보를 결정 
-#### => 런타임 오작동 안정성 보장
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 1) 정적언어</summary>
+<div markdown="1" style="font-size:large;">
+
+##### -> 컴파일 단계에서 변수 및 상수의 형 정보를 결정
+##### -> 런타임 오작동 안정성 보장
+</div>
+</details>
 
 
-### 2) nil
-#### Objective-C 에서는 포인터를 지원하기 때문에 다음의 4가지를 사용.
-#### Swift에서는 <span style="color:red">nil</span>만 사용!
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 2) nil</summary>
+<div markdown="1" style="font-size:large;">
+
+##### Objective-C 에서는 포인터를 지원하기 때문에 다음의 4가지를 사용.
+##### Swift에서는 <span style="color:red">nil</span>만 사용!
 |nil|Nil|NULL|NSNull|
 |---|---|---|---|
 |Object의 부재|Class의 부재|C-Pointer의 부재|NSObject를 상속받는 객체로 collection item을 null로 설정할 필요가 있을때 사용|
 |```NSString * temp = nil;```|```Class temp = Nil```|```int *temp = NULL;```|```[temp addObject:[NSNull null]];```<br/>``` if ([temp objectAtIndex:0] == [NSNull null])```|
+</div>
+</details>
 
 
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 3) 형추론</summary>
+<div markdown="1" style="font-size:large;">
 
-### 3) 형추론
-#### 컴파일 시점에서 변수의 타입을 지정
+##### 컴파일 시점에서 변수의 타입을 지정
 ```
 let a = 1234 // int 
 let b = "test" //String
 ```
-#### 하지만 아래와같이 사용하면 컴파일 시 어떤타입으로 지정할지 알 수 없음. 컴파일러가 점쟁이는 아니므로 값을 할당하지 않을거면
+##### 하지만 아래와같이 사용하면 컴파일 시 어떤타입으로 지정할지 알 수 없음. 컴파일러가 점쟁이는 아니므로 값을 할당하지 않을거면
 ```
 let c
 ```
-#### 아래와 같이 타입을 지정(어노테이션)!
+##### 아래와 같이 타입을 지정(어노테이션)!
 ```
 let c : String
 ```
+</div>
+</details>
 
 
-### 4) Objective-C 연동
-#### Swift에서 Objective Function을 사용할 수도 있고, Objective-C에서 Swift Function을 사용할 수 있다.
-#### 단 Swift4 이상에서는 함수앞에 @objc Inference(추론)을 사용하여 사용하여야 한다.
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 4) Objective-C 연동</summary>
+<div markdown="1" style="font-size:large;">
+
+##### Swift에서 Objective Function을 사용할 수도 있고, Objective-C에서 Swift Function을 사용할 수 있다.
+##### 단 Swift4 이상에서는 함수앞에 @objc Inference(추론)을 사용하여 사용하여야 한다.
 ```
 @objc func mySwiftFn() {
     print("funking swift")
 }
 ```
+</div>
+</details>
 
-### 5) 함수가 1급 객체!
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 5) 함수가 1급 객체</summary>
+<div markdown="1" style="font-size:large;">
+
+##### 변수에 할당 가능
+##### 파라미터로 전달 가능
+##### 함수를 리턴가능
+
+</div>
+</details>
+
 
 
 ## 2.기초 문법
-#### 1) 제어문
-#### while Loop
+
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 1) 제어문</summary>
+<div markdown="1" style="font-size:large;">
+
+##### while Loop
 ```
 var i = 0
 while i < 10 {
@@ -59,7 +92,7 @@ while i < 10 {
     i += 1
 }
 ```
-#### for Loop
+##### for Loop
 ```
 // 1부터 10까지
 for i in 1...10{ 
@@ -78,7 +111,7 @@ for i in stride(from: 10 , to: 1, by: -1) {
    print(i)
 }
 ```
-#### switch Loop
+##### switch Loop
 ```
 let num = 10
 
@@ -93,8 +126,15 @@ default :
     print("--> 나머지 입니다")
 }
 ```
-### 2) Swift 자료형 Tuple
-#### 다양한 데이터들의 묶음 (여러 Type의 값을 하나로 묶어 사용)
+</div>
+</details>
+
+
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 2) Swift 자료형 Tuple</summary>
+<div markdown="1" style="font-size:large;">
+
+##### 다양한 데이터들의 묶음 (여러 Type의 값을 하나로 묶어 사용)
 ```
 var tuple = (1, "Hello, world!", true)
 tuple.0 //1
@@ -104,6 +144,9 @@ tuple.2 //true
 // 아래 처럼 파라메터에 이름 지정 가능!
 var person = (name: "션", age: 15, isJammin: true)
 ```
+</div>
+</details>
+
 
 ### 3) 함수
 #### 표현식
@@ -111,6 +154,10 @@ var person = (name: "션", age: 15, isJammin: true)
 // Void
 func nothingReturn(person: String) {
     print("Hello, \(person)!")
+}
+// Return String
+func stringReturn(person: String) -> String {
+    return "test"
 }
 ```
 함수리턴 -> 타입
@@ -145,7 +192,7 @@ usingWildCardLabelFunc("나리")
 |Named Closure(우리가 알고있는 함수)|Unnamed Closer|
 |---|---|
 |```func doSomething() {print("Somaker")}```|```let closure = { print("Somaker") }```|
-##### 그냥 익명함수 개념으로 알고 씁시다!
+
 #### 표현식
 ```
 {
