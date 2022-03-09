@@ -1,5 +1,5 @@
 # Swift
-
+https://docs.swift.org/swift-book/ReferenceManual/Declarations.html#ID545
 ## 1.언어 특징
 
 
@@ -148,44 +148,61 @@ var person = (name: "션", age: 15, isJammin: true)
 </details>
 
 
-### 3) 함수
-#### 표현식
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 3) 함수</summary>
+<div markdown="1" style="font-size:large;">
+
+##### 표현식
+###### Void (Return Type 생략가능)
 ```
-// Void
 func nothingReturn(person: String) {
     print("Hello, \(person)!")
 }
-// Return String
+// 호출
+nothingReturn(person: "lee")
+```
+###### Return Type 지정
+```
 func stringReturn(person: String) -> String {
     return "test"
 }
+// 호출
+print(nothingReturn(person: "lee"))
 ```
-함수리턴 -> 타입
-파라미터 기본 상수, 변수르 쓰려면 _ value:inout Int 이런식
-전달인자 
+
+###### 위 함수 예제를 보면 함수를 호출할 때에 파라미터명을 입력을 해주는 것을 볼 수 있다. 이걸 <span style="color:red">Argument Label</span> 이라 하는데 아규먼트 레이블을 바꾸고 싶다면 파라미터명 앞에 입력해서 사용
 ```
-// 1. 일반적 함수
-func normalFunc(name: String) {
+func argLabelTest(from person: String){
+    print(person)
 }
-// 함수호출
-normalFunc(name: "나리")
-// 함수이름: normalFunc(name:)
-
-// 2. 전달인자 레이블을 사용한 함수
-func usingArgumentLabelFunc(to name: String) {
-}
-// 함수호출
-usingArgumentLabelFunc(to: "나리")
-// 함수이름: usingArgumentLabelFunc(to:)
-
-
-// 3. 전달인자 레이블을 와일드카드 식별자로 사용하는 함수 - 함수호출 시 자바에서처럼 호출
-func usingWildCardLabelFunc(_ name: String) {
-}
-// 함수호출
-usingWildCardLabelFunc("나리")
-// 함수이름: usingWildCardLabelFunc(_:)
+// 호출
+argLabelTest(from: "lee")
 ```
+
+###### 함수 호출 시 <span style="color:red">Argument Label을 생략</span>하고 사용하려면 Argument Label 자리에 <span style="color:red;font-weight:bold;font-size:x-large">_</span>(언더바, underscore)를 붙여주면 호출시 생략 가능하다.
+```
+func nonArgLabelTest(_ person: String){
+    print(person)
+}
+// 호출
+nonArgLabelTest("lee")
+```
+
+
+파라미터는 기본적으로 상수, 변수로 쓰려면 파라미터 type 앞에 <span style="color:violet;font-weight:bold;">inout</span> 예약어 사용하여 함수 선언하고 호출 시 파라미터 변수 앞에 <span style="color:violet;font-weight:bold;">&</span>(ampersand) 사용
+```
+func toggle(value : inout Bool){
+    value = !value
+}
+// 호출
+var isStupid = false
+toggle(value: &isStupid)
+```
+
+</div>
+</details>
+
+
 
 ### 4) Closure
 #### 코드 안에서 전달되어 사용할 수 있는 로직을 가진 중괄호“{}”로 구분된 코드의 블럭이며, 일급 객체의 역할
@@ -193,7 +210,8 @@ usingWildCardLabelFunc("나리")
 |---|---|
 |```func doSomething() {print("Somaker")}```|```let closure = { print("Somaker") }```|
 
-#### 표현식
+#### Unnamed Coloser에 대해서 알아봅시다
+##### 표현식
 ```
 {
     (Parameters) -> Return Type in
