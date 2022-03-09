@@ -22,7 +22,7 @@ https://jusung.gitbook.io/the-swift-language-guide/language-guide/07-closures
 |nil|Nil|NULL|NSNull|
 |---|---|---|---|
 |Object의 부재|Class의 부재|C-Pointer의 부재|NSObject를 상속받는 객체로 collection item을 null로 설정할 필요가 있을때 사용|
-|```NSString * temp = nil;```|```Class temp = Nil```|```int *temp = NULL;```|```[temp addObject:[NSNull null]];```<br/>``` if ([temp objectAtIndex:0] == [NSNull null])```|
+|```NSString *temp = nil;```|```Class temp = Nil```|```int *temp = NULL;```|```[temp addObject:[NSNull null]];```<br/>``` if ([temp objectAtIndex:0] == [NSNull null])```|
 </div>
 </details>
 
@@ -492,6 +492,9 @@ struct Person {
 |시점|Compile|Runtime|
 |장점|런타임 시 메모리 관리를 위한 시스템 자원이 불필요|상호 참조 상황등의 복잡한 상황에서도 인스턴스를 해제할 수 있는 가능성이 더 높으며 메모리 해제를 신경 안써줘도 돼서 개발이 편해진다|
 |단점|ARC의 작동 규칙을 모르고 사용하면 메모리릭 발생 가능|프로그램 동작 외의 메모리 감시를 위한 추가 자원이 필요하며 인스턴스가 언제 할당이 해제되는지 예측하기 어렵다|
+
+![GC](res/gc-heap.png)
+
 </div>
 </details>
 
