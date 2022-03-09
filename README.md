@@ -3,28 +3,11 @@
 ### 1) 정적언어 => 컴파일 단계에서 변수 및 상수의 형 정보를 결정 => 런타임 오작동 안정성 보장
 ### 2) nil
 #### Objective-C 에서는 포인터를 지원하기 때문에 다음의 4가지를 사용.
-#### (1) nil
-##### Object의 부재
-```
-NSString * strObject = nil;
-```
-#### (2) Nil
-##### Class의 부재
-```
-Class myClass = Nil
-```
-#### (3) NULL
-##### C-Pointer의 부재
-```
-int *intPtr = NULL;
-```
-#### (4) NSNull
-##### NSObject를 상속받는 객체로 collection item을 null로 설정할 필요가 있을때 사용
-```
-[myArray addObject:[NSNull null]];
-if ([myArray objectAtIndex:0] == [NSNull null])
-```
-
+#### Swift에서는 <span style="color:red">nil</span>만!
+|nil|Nil|NULL|NSNull|
+|---|---|---|---|
+|Object의 부재|Class의 부재|C-Pointer의 부재|NSObject를 상속받는 객체로 collection item을 null로 설정할 필요가 있을때 사용|
+|```NSString * strObject = nil;```|```Class myClass = Nil```|```int *intPtr = NULL;```|```[myArray addObject:[NSNull null]];```<br/>``` if ([myArray objectAtIndex:0] == [NSNull null])```|
 
 
 
