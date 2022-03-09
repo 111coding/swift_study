@@ -290,19 +290,99 @@ unnamedTest("lee")
 </details>
 
 
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 5) 옵셔널</summary>
+<div markdown="1" style="font-size:large;">
+
+##### 값이 nil 일 수도 있는 변수
+```
+let name: String? = nil 
+```
+
+##### 옵셔널 값 사용법
+1. 강제 언래핑 (Forced unwrapping)
+```
+let name: String?
+name = "lee"
+print(name!)
+```
+2. Optional binding (if let)
+```
+if let unwrappedName = name{
+    print(unwrappedName)
+}else{
+    print("nil!")
+}
+
+// else 생략 가능
+if let unwrappedName = name{
+    print(unwrappedName)
+}
+```
+3. Optional binding (guard)
+```
+func guardTest(name : String?) {
+    guard let unwrapperedName = name else {
+        print("nil!")
+        return
+    }
+    print(unwrapperedName)
+}
+```
+4. Nil coalescing
+```
+var name : String?
+name = "lee"
+let unwrapperedName = name ?? "kim"
+```
 
 
 
+</div>
+</details>
 
-옵셔널 
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 6) 컬렉션</summary>
+<div markdown="1" style="font-size:large;">
 
-컬렉션
 
-구조체 vs 클래스
 
-프로퍼티 게터 세터 윌셋 딛셋
+</div>
+</details>
+
+
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 7) 구조체 vs 클래스</summary>
+<div markdown="1" style="font-size:large;">
+
+
+
+</div>
+</details>
+
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 8) 프로퍼티 게터 세터 윌셋 딛셋</summary>
+<div markdown="1" style="font-size:large;">
+
+
+
+</div>
+</details>
+ 
+
+
+
 
 
 
 ## 3.ARC (Automatic Reference Counting)
-## *ARC VS JAVA GC VS DART GC VS JS GC
+<details>
+<summary style="font-size:x-large;font-weight:bold">ARC</summary>
+<div markdown="1" style="font-size:large;">
+
+
+
+</div>
+</details>
+
+
