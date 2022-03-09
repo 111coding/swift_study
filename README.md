@@ -1,5 +1,6 @@
 # Swift
 https://docs.swift.org/swift-book/ReferenceManual/Declarations.html#ID545
+https://jusung.gitbook.io/the-swift-language-guide/language-guide/07-closures
 ## 1.언어 특징
 
 
@@ -28,8 +29,15 @@ https://docs.swift.org/swift-book/ReferenceManual/Declarations.html#ID545
 
 
 <details>
-<summary style="font-size:x-large;font-weight:bold"> 3) 형추론</summary>
+<summary style="font-size:x-large;font-weight:bold"> 3) 타입추론</summary>
 <div markdown="1" style="font-size:large;">
+
+```
+// 변수
+var a = 1;
+// 상수
+let b = 2;
+```
 
 ##### 컴파일 시점에서 변수의 타입을 지정
 ```
@@ -203,14 +211,51 @@ toggle(value: &isStupid)
 </details>
 
 
+<details>
+<summary style="font-size:x-large;font-weight:bold"> 4) Closure</summary>
+<div markdown="1" style="font-size:large;">
 
-### 4) Closure
-#### 코드 안에서 전달되어 사용할 수 있는 로직을 가진 중괄호“{}”로 구분된 코드의 블럭이며, 일급 객체의 역할
+##### 정의
+```
+“A closure is the combination of a function and the lexical environment within which that function was declared.”
+클로저는 함수와 그 함수가 선언됐을 때의 렉시컬 환경(Lexical environment)과의 조합이다.
+-> 클로저는 반환된 내부함수가 자신이 선언됐을 때의 환경(Lexical environment)인 스코프를 기억하여 자신이 선언됐을 때의 환경(스코프) 밖에서 호출되어도 그 환경(스코프)에 접근할 수 있는 함수
+- MDN -
+
+클로저는 어떤 상수나 변수의 참조를 캡쳐(capture)해 저장
+- Swift -
+
+일급 객체 함수의 처리를 위해 사용
+
+// EX
+func makeIncrementer(forIncrement amount: Int) -> () -> Int {
+    var runningTotal = 0
+    func incrementer() -> Int {
+        runningTotal += amount
+        return runningTotal
+    }
+    return incrementer
+}
+
+let incrementByTen = makeIncrementer(forIncrement: 10)
+incrementByTen()
+// returns a value of 10
+incrementByTen()
+// returns a value of 20
+incrementByTen()
+// returns a value of 30
+
+let incrementBySeven = makeIncrementer(forIncrement: 7)
+incrementBySeven()
+// returns a value of 7
+```
+
+##### 종류
 |Named Closure(우리가 알고있는 함수)|Unnamed Closer|
 |---|---|
 |```func doSomething() {print("Somaker")}```|```let closure = { print("Somaker") }```|
 
-#### Unnamed Coloser에 대해서 알아봅시다
+##### Unnamed Coloser에 대해서 알아봅시다
 ##### 표현식
 ```
 {
@@ -233,7 +278,19 @@ toggle(value: &isStupid)
     return "Hello, \(name)"
 }
 ```
-#### $Unnamed Closer에는 아규먼트 라벨(Argument Label) 사용X. 오직 Parameter Name!
+##### Unnamed Closer에는 아규먼트 라벨(Argument Label) 사용X
+```
+let unnamedTest = { (name: String) -> String in
+    return "Hello, \(name)"
+}
+unnamedTest("lee")
+```
+
+</div>
+</details>
+
+
+
 
 
 
