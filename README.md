@@ -93,10 +93,26 @@ default :
     print("--> 나머지 입니다")
 }
 ```
-Swift 자료형 Tuple
+### 2) Swift 자료형 Tuple
+#### 다양한 데이터들의 묶음 (여러 Type의 값을 하나로 묶어 사용)
+```
+var tuple = (1, "Hello, world!", true)
+tuple.0 //1
+tuple.1 //"Hello, world!"
+tuple.2 //true
 
+// 아래 처럼 파라메터에 이름 지정 가능!
+var person = (name: "션", age: 15, isJammin: true)
+```
 
-Closure (익명함수)
+### 3) 함수
+#### 표현식
+```
+// Void
+func nothingReturn(person: String) {
+    print("Hello, \(person)!")
+}
+```
 함수리턴 -> 타입
 파라미터 기본 상수, 변수르 쓰려면 _ value:inout Int 이런식
 전달인자 
@@ -123,6 +139,38 @@ func usingWildCardLabelFunc(_ name: String) {
 usingWildCardLabelFunc("나리")
 // 함수이름: usingWildCardLabelFunc(_:)
 ```
+
+### 4) Closure
+#### 코드 안에서 전달되어 사용할 수 있는 로직을 가진 중괄호“{}”로 구분된 코드의 블럭이며, 일급 객체의 역할
+|Named Closure(우리가 알고있는 함수)|Unnamed Closer|
+|---|---|
+|```func doSomething() {print("Somaker")}```|```let closure = { print("Somaker") }```|
+##### 그냥 익명함수 개념으로 알고 씁시다!
+#### 표현식
+```
+{
+    (Parameters) -> Return Type in
+     실행 구문
+}
+```
+```
+ (Parameters) -> Return Type  // 클로저헤드
+ in 실행 구문 // 클로저 바디
+
+```
+```
+// Return X, Parameters X
+{ () -> () in
+    print("Closure")
+}
+// Return O, Parameters O
+{ (name: String) -> String in
+    return "Hello, \(name)"
+}
+```
+#### $Unnamed Closer에는 아규먼트 라벨(Argument Label) 사용X. 오직 Parameter Name!
+
+
 
 옵셔널 
 
