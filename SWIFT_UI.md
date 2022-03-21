@@ -1,3 +1,20 @@
+수정자
+
+
+
+{}
+뷰 빌더는 함수 빌더를 이용해 만들어진 내장 swift DSL이다. 뷰 생성시 전달받은 함수를 통해 하나 이상의 자식 뷰를 만드는데 사용된다.
+뷰 빌더는 buildBlock 이라는 타입 메서드에 값을 전달하고, 전달받은 뷰가 2개 이상일때는 TupleView 라는 타입을 반환한다.
+buildBlock 의 매개변수 최대 개수는 10개 이므로, ViewBuilder 에 전달할 수 있는 뷰의 개수도 10개이다.
+따라서 VStack {}, List {} 내부에 10개를 넘는 뷰를 넣을경우 컴파일 에러가 발생한다.
+
+10개 이유
+
+https://stackoverflow.com/questions/64927159/why-swiftui-limited-viewbuilder-parameters-count-to-10
+
+@escaping
+클로저가 함수의 인자로 전달됐을 때, 함수의 실행이 종료된 후 실행되는 클로저
+
 # Swift UI
 #### 참조
  - [공식문서 - SwiftUI](https://developer.apple.com/documentation/swiftui)
