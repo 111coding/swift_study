@@ -1,20 +1,3 @@
-수정자
-
-
-
-{}
-뷰 빌더는 함수 빌더를 이용해 만들어진 내장 swift DSL이다. 뷰 생성시 전달받은 함수를 통해 하나 이상의 자식 뷰를 만드는데 사용된다.
-뷰 빌더는 buildBlock 이라는 타입 메서드에 값을 전달하고, 전달받은 뷰가 2개 이상일때는 TupleView 라는 타입을 반환한다.
-buildBlock 의 매개변수 최대 개수는 10개 이므로, ViewBuilder 에 전달할 수 있는 뷰의 개수도 10개이다.
-따라서 VStack {}, List {} 내부에 10개를 넘는 뷰를 넣을경우 컴파일 에러가 발생한다.
-
-10개 이유
-
-https://stackoverflow.com/questions/64927159/why-swiftui-limited-viewbuilder-parameters-count-to-10
-
-@escaping
-클로저가 함수의 인자로 전달됐을 때, 함수의 실행이 종료된 후 실행되는 클로저
-
 # Swift UI
 #### 참조
  - [공식문서 - SwiftUI](https://developer.apple.com/documentation/swiftui)
@@ -31,18 +14,18 @@ https://stackoverflow.com/questions/64927159/why-swiftui-limited-viewbuilder-par
     - @main : 이 앱의 EntryPoint(진입점)
     - App   : App protocol을 준수
     - body  : 첫페이지
-```swift
-import SwiftUI
+    ```swift
+    import SwiftUI
 
-@main
-struct SwiftUiStudyApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+    @main
+    struct SwiftUiStudyApp: App {
+        var body: some Scene {
+            WindowGroup {
+                ContentView()
+            }
         }
     }
-}
-```
+    ```
 - **ContentView.swift**
     - SwiftUI로 화면을 개발하는 파일
     - Storyboard로 개발하면 storyboard, ViewController파일이 필수로 필요했지만 SwiftUI는 View 파일에서 **선언형**으로 개발
@@ -50,22 +33,22 @@ struct SwiftUiStudyApp: App {
         - Interface vs Protocol
             - 기능 구현 : Interface 필수 Protocol 선택적가능(optional)
             - 기본값 설정 : Interface O Protocol X
-```swift
-import SwiftUI
+    ```swift
+    import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
+    struct ContentView: View {
+        var body: some View {
+            Text("Hello, world!")
+                .padding()
+        }
     }
-}
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
     }
-}
-```
+    ```
 - **Assets**
 - **Preview Content**
     - 미리보기에 사용될 Assets
@@ -75,124 +58,199 @@ struct ContentView_Previews: PreviewProvider {
 
 
 ### 2. UI 기초
-#### Text
-- 기본선언
-```swift
-Text("Hello World")
-```
-- 줄길이 제한
-```swift
-// 3줄제한
-Text("Hello World")
-    .lineLimit(3)
+- #### Text
 
-// 제한없음
-Text("Hello World")
-    .lineLimit(nil)
-```
-- 생략
-```swift
-// 중간생략
-Text("Hello World!Hello World!Hello World!Hello World!Hello World!")
-    .truncationMode(.middle)
-```
-- 폰트
-```swift
-Text("Hello World")
-    .font(.largeTitle)
-```
-- 색상
-```swift
-    .foregroundColor(Color.red)
-```
-#### TextField
+    ```swift
+    // 기본적용
+    Text("Hello World")
+
+    // 인라인 확장함수(@inlinable, extension)를 이용해 커스텀
+    Text("Hello World!Hello World!Hello World!Hello World!Hello World!")
+        .lineLimit(1) // 1줄제한. 제한없으려면 .lineLimit(nil)
+        .truncationMode(.middle) // 중간생략
+        .font(.largeTitle) // 폰트
+        .foregroundColor(Color.red) // 색상
+    ```
+
+
+- #### TextField
+
     - 값을 변경할때 뷰를 갱신해야한다면 변수 앞에 **@State** 달아줘야함(뒤에서 자세히 다룸)
-```swift
-import SwiftUI
 
-struct ContentView: View {
-    
-    @State var searchString = "";
-    
-    var body: some View {
-        Form{
-            TextField("Search",text: $searchString)
-        }
-    }
-}
-```
-**Preview**
-![TextForm](ui_res/textForm.png)
+        ```swift
+        import SwiftUI
 
-
-#### Image
-##### AsyncImage
-```swift
-import SwiftUI
-
-struct ContentView: View {
-    
-    var body: some View {
-        let url = URL(string: "https://img2.sbs.co.kr/img/sbs_cms/WE/2019/08/09/WE97496996_ori.jpg")!
-        AsyncImage(url: url,scale: 3) // Scale Factor
-    }
-}
-```
-- 로딩중일때 보여줄 화면(placeholder)설정 가능함
-```swift
-import SwiftUI
-
-struct ContentView: View {
-    
-    var body: some View {
-        let url = URL(string: "https://img2.sbs.co.kr/img/sbs_cms/WE/2019/08/09/WE97496996_ori.jpg")!
-        AsyncImage(url: url,scale: 3) { image in
-            image
-        } placeholder: {
-            LoadingView()
-        }
-    }
-}
-
-struct LoadingView: View {
-    var body: some View {
-        Text("Loading")
-    }
-}
-```
-#### VStack, HStack, ZStack
-- VStack : 세로로 쌓이는 스택(Column in Flutter)
-- HStack : 가로로 쌓이는 스택(Row in Flutter)
-- ZStack : 겹치는 스택(Stack in Flutter)
-```swift
-import SwiftUI
-
-struct ContentView: View {
-    
-    var body: some View {
-        ZStack{
-            HStack{
-                Text("Htest1")
-                Text("Htest1")
-                Text("Htest1")
-            }
-            VStack{
-                Text("Vtest1")
-                Text("Vtest1")
-                Text("Vtest1")
+        struct ContentView: View {
+            
+            @State var searchString = "";
+            
+            var body: some View {
+                // 뷰빌더(@ViewBuilder)를 통해 뷰를 빌드!
+                Form{
+                    TextField("Search",text: $searchString)
+                }
             }
         }
-    }
-}
-```
-**Preview**
-![Stack](ui_res/stack.png)
-
-#### List
-#### NavigationView
+        ```
+    - **Preview**
+    ![TextForm](ui_res/textForm.png)
 
 
-### 3. Swift 5.1 주요기능
+
+- #### Image
+
+    - ##### AsyncImage
+
+        ```swift
+        import SwiftUI
+
+        struct ContentView: View {
+            
+            var body: some View {
+                let url = URL(string: "https://img2.sbs.co.kr/img/sbs_cms/WE/2019/08/09/WE97496996_ori.jpg")!
+                AsyncImage(url: url,scale: 3) // Scale Factor
+            }
+        }
+        ```
+
+     - 로딩중일때 보여줄 화면(placeholder)설정 가능함
+
+        ```swift
+        import SwiftUI
+
+        struct ContentView: View {
+            
+            var body: some View {
+                let url = URL(string: "https://img2.sbs.co.kr/img/sbs_cms/WE/2019/08/09/WE97496996_ori.jpg")!
+                AsyncImage(url: url,scale: 3) { image in
+                    image
+                } placeholder: {
+                    LoadingView()
+                }
+            }
+        }
+
+        struct LoadingView: View {
+            var body: some View {
+                Text("Loading")
+            }
+        }
+        ```
+
+
+- #### VStack, HStack, ZStack
+    - VStack : 세로로 쌓이는 스택(Column in Flutter)
+    - HStack : 가로로 쌓이는 스택(Row in Flutter)
+    - ZStack : 겹치는 스택(Stack in Flutter)
+    - **각각 스택안에는 10개의 뷰만 넣을 수 있으며 그 이상으로 넣으려면 Group으로 감싸야함. 이유는 뒤에서 설명!**
+        ```swift
+        import SwiftUI
+
+        struct ContentView: View {
+            
+            var body: some View {
+                ZStack{
+                    HStack{
+                        Text("Htest1")
+                        Text("Htest1")
+                        Text("Htest1")
+                    }
+                    VStack{
+                        Text("Vtest1")
+                        Text("Vtest1")
+                        Text("Vtest1")
+                    }
+                }
+            }
+        }
+        ```
+    - **Preview**
+    ![Stack](ui_res/stack.png)
+
+- #### List
+    - **스택과 마친가지로 10개의 뷰만 넣을 수 있으며 그 이상으로 넣으려면 Group으로 감싸야함.**
+        ```swift
+        import SwiftUI
+
+        struct ContentView: View {
+            
+            var body: some View {
+                List{
+                    Text("1")
+                    Text("2")
+                    Text("3")
+                    Text("4")
+                    Text("5")
+                }
+            }
+        }
+        ```
+    - **ForEach**로 리스트 빌드가능!
+    - **10개이상 가능**
+        ```swift
+        import SwiftUI
+
+        struct ContentView: View {
+            
+            @State var items = [1,2,3,4,5,6,7,8,9,10,11,12]
+            
+            var body: some View {
+                List{
+                    ForEach(0..<items.count){ index in
+                        Text(String(items[index]))
+                    }
+                }
+            }
+        }
+        ```
+
+## UI선언 방식
+- ### Extension 클로저 이용
+    - #### 각각의 뷰 혹은 부모구조체의 뷰들이 가지고 있는 인라인 확장함수(@inlinable)를 통해서 프로퍼티 값 변경!
+        - @inlinable : 함수를 호출할 때 복귀주소를 스택에 쌓고 해당 함수로 점프하는 방식이 아닌 컴파일 시 함수를 호출한 함수 스택 내에 삽입. -> CPU 연산 감소
+
+- ### @ViewBuilder - 클로저를 매개변수로
+    - 함수 빌더를 이용해 만들어진 내장 swift DSL
+    - 뷰 생성시 전달받은 함수를 통해 하나 이상의 자식 뷰를 만드는데 사용
+    - buildBlock 이라는 타입 메서드에 값을 전달하고, 전달받은 뷰가 2개 이상일때는 TupleView 라는 타입을 반환
+    - **buildBlock 의 매개변수 최대 개수는 10개 이므로, ViewBuilder 에 전달할 수 있는 뷰의 개수도 10개**
+        ```swift
+        // SwiftUI 내부 코드
+        // 갯수별로 extension 만들어져 있음
+        // 맥시멈 10개까지 구현되어 있음
+
+        ...
+
+        @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+        extension ViewBuilder {
+
+            public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7>(_ c0: C0, _ c1: C1, _ c2: C2, _ c3: C3, _ c4: C4, _ c5: C5, _ c6: C6, _ c7: C7) -> TupleView<(C0, C1, C2, C3, C4, C5, C6, C7)> where C0 : View, C1 : View, C2 : View, C3 : View, C4 : View, C5 : View, C6 : View, C7 : View
+        }
+
+        @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+        extension ViewBuilder {
+
+            public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8>(_ c0: C0, _ c1: C1, _ c2: C2, _ c3: C3, _ c4: C4, _ c5: C5, _ c6: C6, _ c7: C7, _ c8: C8) -> TupleView<(C0, C1, C2, C3, C4, C5, C6, C7, C8)> where C0 : View, C1 : View, C2 : View, C3 : View, C4 : View, C5 : View, C6 : View, C7 : View, C8 : View
+        }
+
+        @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+        extension ViewBuilder {
+
+            public static func buildBlock<C0, C1, C2, C3, C4, C5, C6, C7, C8, C9>(_ c0: C0, _ c1: C1, _ c2: C2, _ c3: C3, _ c4: C4, _ c5: C5, _ c6: C6, _ c7: C7, _ c8: C8, _ c9: C9) -> TupleView<(C0, C1, C2, C3, C4, C5, C6, C7, C8, C9)> where C0 : View, C1 : View, C2 : View, C3 : View, C4 : View, C5 : View, C6 : View, C7 : View, C8 : View, C9 : View
+        }
+        }
+        ```
+        https://developer.apple.com/documentation/swiftui/viewbuilder
+
+    - #### 애플은 왜 이렇게 불편하게 만들었을까?
+        - Swift는 현재 가변 제네릭을 지원하지 않음
+         https://github.com/apple/swift/blob/main/docs/GenericsManifesto.md#variadic-generics
+
+
+
+
+
+### 3. Swift 5.1 Attriutes
 #### 3.1 Property Wrappers
 #### 3.2. State
 #### 3.3. Binding
