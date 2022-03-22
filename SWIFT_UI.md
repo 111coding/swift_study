@@ -250,16 +250,210 @@
 
 
 
-### 3. Swift 5.1 Attriutes
-#### 3.1 Property Wrappers
+### 3. Swift 5.1 Property Wrappers
+![Attriutes](ui_res/swift_attributes.png)
+#### 3.1 Property Wrapper
+[스위프트 문서](https://docs.swift.org/swift-book/LanguageGuide/Properties.html#ID617)
+
+- 프로퍼티가 ***저장*** 되는 방식을 관리하는 코드와 프로퍼티를 ***정의*** 하는 코드 ***분리***
+    - 원문 : A property wrapper adds a layer of separation between code that manages how a property is stored and the code that defines a property.
+- ***여러 프로퍼티들에 동일한 관리 코드가 필요하다면 사용!***
+    - 원문 : When you use a property wrapper, you write the management code once when you define the wrapper, and then reuse that management code by applying it to multiple properties.
+- Swift 5.1 에 추가
+- 지역 변수(local stored variable)에서만 사용 가능
+
+- 공식페이지 예제
+```swift
+// 프로퍼티래퍼 정의
+@propertyWrapper
+struct TwelveOrLess {
+    private var number = 0
+    var wrappedValue: Int {
+        get { return number }
+        set { number = min(newValue, 12) }
+    }
+}
+
+
+struct SmallRectangle {
+    @TwelveOrLess var height: Int // 정의된 프로퍼티래퍼 사용
+    @TwelveOrLess var width: Int // 정의된 프로퍼티래퍼 사용
+}
+
+var rectangle = SmallRectangle()
+print(rectangle.height)
+// Prints "0"
+
+rectangle.height = 10
+print(rectangle.height)
+// Prints "10"
+
+rectangle.height = 24
+print(rectangle.height)
+// Prints "12"
+```
+
 #### 3.2. State
+
+[공식문서 - State](https://developer.apple.com/documentation/swiftui/state)
+
+- SwiftUI는 **State**로 선언한 속성의 저장소를 관리. **값이 변경**되면 SwiftUI는 값에 의존하는 **뷰 계층 구조의 부분을 업데이트**함
+    - SwiftUI manages the storage of a property that you declare as state. When the value changes, SwiftUI updates the parts of the view hierarchy that depend on the value
+
+        ```swift
+        import SwiftUI
+
+        struct ContentView: View {
+            
+            @State private var isPlaying: Bool = false
+            
+            var body: some View {
+                Button(isPlaying ? "Pause" : "Play") {
+                    isPlaying.toggle()
+                }
+            }
+        }
+        ```
+
 #### 3.3. Binding
-#### 3.4. ObservableObject
-#### 3.5. EnvironmentObject
 
-### 4. 통신
-#### 4.1 요청
-#### 4.2 직렬화, 역직렬화
+[공식문서 - Binding](https://developer.apple.com/documentation/swiftui/binding)
+
+-  상위뷰의 State 값을 참조할때 사용
+
+    ```swift
+    import SwiftUI
+
+    struct ContentView: View {
+        @State private var isPlaying: Bool = false
+        
+        var body: some View {
+            // 변수명 앞에 & 앰퍼샌드 붙이고 전달!
+            PlayButton(isPlaying: $isPlaying)
+        }
+    }
+
+    struct PlayButton: View {
+        // 값 받는곳에 @Binding
+        @Binding var isPlaying: Bool
+
+        var body: some View {
+            Button(isPlaying ? "Pause" : "Play") {
+                isPlaying.toggle()
+            }
+        }
+    }
+    ```
+
+#### 3.4. StateObject
+[공식문서 - StateObject](https://developer.apple.com/documentation/swiftui/stateobject)
+
+- ObservableObject를 인스턴스화 하는 프로퍼티 wrapper 타입
+```swift
+    import SwiftUI
+
+    struct ContentView: View {
+        @StateObject var countRepo = CountRepo()
+        
+        var body: some View {
+            Button("\(self.countRepo.count)") {
+                self.countRepo.count += 1
+            }
+        }
+    }
+
+    class CountRepo: ObservableObject {
+        // @Published : 값이 변할때마다 ObservableObject가 가지고있는
+        // objectWillChange.send() 를 호출해 UI에 알림
+        @Published var count: Int = 0
+    }
+```
+
+#### 3.5. ObservableObject
+
+- View에서 외부 Object 참조할때
+- @ObservedObject var countRepo = CountRepo() 이렇게 사용도 가능하지만 이렇게 하면 상위 뷰의 값이 변경되면 해당 뷰는 다시 그려져서 해당 인스턴스는 새로 생성됨
+
+    ```swift
+    struct ContentView: View {
+        @StateObject var countRepo = CountRepo()
+        
+        var body: some View {
+            PlayButton(countRepo: countRepo)
+        }
+    }
+
+    struct PlayButton: View {
+        // 값 받는곳에 @Binding
+        @ObservedObject var countRepo: CountRepo
+
+        var body: some View {
+            Button("\(self.countRepo.count)") {
+                self.countRepo.count += 1
+            }
+        }
+    }
+
+    class CountRepo: ObservableObject {
+        // @Published : 값이 변할때마다 ObservableObject가 가지고있는
+        // objectWillChange.send() 를 호출해 UI에 알림
+        @Published var count: Int = 0
+    }
+    ```
+
+#### 3.6. EnvironmentObject
+
+- 별도로 값을 전달해주지 않아도 상속받는 부모로부터 함께 적용되는 오브젝트
+
+    - main
+        ```swift
+        import SwiftUI
+
+        @main
+        struct SwiftUiStudyApp: App {
+            var body: some Scene {
+                WindowGroup {
+                    // ContentView에 environmentObject등록
+                    ContentView().environmentObject(CountRepo())
+                }
+            }
+        }
+        ```
+    - ContentView
+        ```swift
+        import SwiftUI
+
+        struct ContentView: View {
+            
+            var body: some View {
+                VStack {
+                    ChildTextView()
+                    ChildButtonView()
+                }
+            }
+        }
+
+        class CountRepo: ObservableObject {
+            @Published var count: Int = 0
+        }
 
 
-### [Xcode] Package Manger vs [iOS - Swift] cocoaPods
+        struct ChildTextView:View{
+            @EnvironmentObject var countRepo:CountRepo
+            var body: some View{
+                Text("\(self.countRepo.count)").font(.largeTitle)
+            }
+
+        }
+
+        struct ChildButtonView:View{
+            @EnvironmentObject var countRepo:CountRepo
+            var body: some View{
+                Button("숫자증가") {
+                    self.countRepo.count += 1
+                }
+            }
+
+        }
+        ```
+
